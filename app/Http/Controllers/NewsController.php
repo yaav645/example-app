@@ -16,6 +16,7 @@ class NewsController extends Controller
     {
         $new = $this->getNews();
         $new[$id]['id'] ?? abort(404);
+
         return view('news.show', ['new' => $new, 'id' => $id]);
 
     }

@@ -5,6 +5,8 @@ use App\Services\DataCheck;
 use App\Facades\DataService;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\admin\IndexController as AdminIndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,9 +30,13 @@ Route::get('/test', function () {
 });
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+    Route::get('/', AdminIndexController::class)->name('index');
     Route::resource('/news', AdminNewsController::class);
+    Route::get('/category', [AdminCategoryController::class, 'index'])->name('category');
 });
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{id}', [NewsController::class, 'show'])->where('id', '\d+')->name('news.show');
+
+
 

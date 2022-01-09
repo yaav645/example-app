@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class categoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
-        return view('admin.news.index',['newslist' => $this->getNews()]);
+        return view('admin.categories.index');
     }
 
     /**
@@ -23,14 +22,10 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
     public function create()
     {
         //
-        return view('admin.news.create');
     }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -40,10 +35,7 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => ['required', 'string']
-        ]);
-        dd($request->input('title'));
+        //
     }
 
     /**
@@ -52,9 +44,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function gitadd($id)
+    public function show($id)
     {
-
+        //
     }
 
     /**
