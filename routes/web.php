@@ -20,19 +20,17 @@ use App\Http\Controllers\admin\IndexController as AdminIndexController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('news.index');
 });
 
-Route::get('/test', function () {
-    //$ext = new DataCheck();
-    dump(DataService::isValid('11/11/2118'));
-    return view('welcome');
-});
+Route::get('/', [NewsController::class, 'index'])->name('news.index');
+
+
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
     Route::get('/', AdminIndexController::class)->name('index');
     Route::resource('/news', AdminNewsController::class);
-    Route::get('/category', [AdminCategoryController::class, 'index'])->name('category');
+    Route::resource('/category', AdminCategoryController::class);
 });
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');

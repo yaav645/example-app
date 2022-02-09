@@ -7,7 +7,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @if(request()->routeIs('admin.category')) active @endif" href="{{ route('admin.category') }}">
+                <a class="nav-link @if(request()->routeIs('admin.category')) active @endif" href="{{ route('admin.category.index') }}">
                     Category
                 </a>
             </li>

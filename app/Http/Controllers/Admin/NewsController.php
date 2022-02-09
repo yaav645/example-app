@@ -43,7 +43,7 @@ class NewsController extends Controller
         $request->validate([
             'title' => ['required', 'string']
         ]);
-        dd($request->input('title'));
+        dd($request->ip());
     }
 
     /**

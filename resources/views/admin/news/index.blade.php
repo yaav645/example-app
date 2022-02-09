@@ -31,7 +31,7 @@
                     <td>{{ $news['author'] }}</td>
                     <td>{{ now()->format('d-m-Y H:i') }}</td>
                     <td>
-                        <a href="">Ред.</a>&nbsp;|&nbsp; <a href="">Уд.</a>
+                        <a href="">Ред.</a>&nbsp;|&nbsp; <a href="javascript" style="color: red">Уд.</a>
                     </td>
                 </tr>
             @empty
