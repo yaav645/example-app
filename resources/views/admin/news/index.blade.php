@@ -26,9 +26,9 @@
             <tbody>
             @forelse ($newslist as $news)
                 <tr>
-                    <td>{{ $news['id'] }}</td>
-                    <td>{{ $news['title'] }}</td>
-                    <td>{{ $news['author'] }}</td>
+                    <td>{{ $news->id }}</td>
+                    <td>{{ $news->title }}</td>
+                    <td>{{ $news->author }}</td>
                     <td>{{ now()->format('d-m-Y H:i') }}</td>
                     <td>
                         <a href="">Ред.</a>&nbsp;|&nbsp; <a href="javascript" style="color: red">Уд.</a>
