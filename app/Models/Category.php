@@ -11,10 +11,10 @@ class Category extends Model
 
     protected $table = "categories";
 
-    public function getCategory()
-    {
-        return \DB::table($this->table)->select(['id', 'title', 'description'])->get();
-    }
+    protected $fillable = [
+        'title',
+        'description'
+    ];
 
     public function getCategoryByID(int $id)
     {

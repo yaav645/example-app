@@ -12,15 +12,14 @@ class NewsController extends Controller
     public function index()
     {
 
-        $news = New News();
-        return view('news.index',['newslist' => $news->getNews()]);
+        $news = News::all();
+        return view('news.index',['newslist' => $news]);
 
     }
 
-    public function show(int $id)
+    public function show(News $news)
     {
-        $news = New News();
-        $news = $news->getNewsByID($id);
+
         return view('news.show', ['news' => $news]);
 
     }

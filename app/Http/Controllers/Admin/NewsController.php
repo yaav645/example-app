@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -15,8 +16,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = New News();
-        return view('admin.news.index',['newslist' => $news->getNews()]);
+        $news = News::paginate(10);
+        $categories = Category::all();
+        return view('admin.news.index',['newslist' => $news, 'categories' => $categories]);
     }
 
     /**
@@ -27,8 +29,9 @@ class NewsController extends Controller
 
     public function create()
     {
-        //
-        return view('admin.news.create');
+        $categories = Category::all();
+        $news = News::all();
+        return view('admin.news.create',['news' => $news, 'categories' => $categories]);
     }
 
 
@@ -42,9 +45,16 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string']
+            'title' => ['required', 'string'],
+            'author' => ['required', 'string']
         ]);
-        dd($request->ip());
+        $news = News::create($request->only(['title', 'category_id', 'author', 'status', 'description']));
+        if($news) {
+            return redirect()->route('admin.news.index')
+                ->with('success', 'Новость успешно добавлена');
+        }
+
+        return back()->with('error', 'Новость не добавлена');
     }
 
     /**
@@ -64,9 +74,10 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(News $news)
     {
-        //
+        $categories = Category::all();
+        return view('admin.news.edit',['news' => $news, 'categories' => $categories]);
     }
 
     /**
@@ -76,9 +87,22 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, News $news)
     {
-        //
+    /*    $news->title = $request->input('title');
+        $news->category_id = $request->input('category_id');
+        $news->author = $request->input('author');
+        $news->status = $request->input('status');
+        $news->description = $request->input('description');*/
+
+        $news = $news->fill($request->only(['title', 'category_id', 'author', 'status', 'description']))->save();
+
+        if($news) {
+            return redirect()->route('admin.news.index')
+                ->with('success', 'Новость успешно обновлена');
+        }
+
+        return back()->with('error', 'Новость не обновлена');
     }
 
     /**
@@ -87,7 +111,7 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(News $news)
     {
         //
     }

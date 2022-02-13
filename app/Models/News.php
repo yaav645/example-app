@@ -11,14 +11,14 @@ class News extends Model
 
     protected $table = "news";
 
-    public function getNews()
-    {
-        return \DB::table($this->table)->select(['id', 'title', 'author', 'description'])->get();
-    }
+    protected $fillable = [
+        'title',
+        'category_id',
+        'author',
+        'status',
+        'description'
+    ];
 
-    public function getNewsByID(int $id)
-    {
-        return \DB::table($this->table)->find($id);
-    }
+
 
 }

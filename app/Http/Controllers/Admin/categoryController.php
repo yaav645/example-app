@@ -15,8 +15,8 @@ class categoryController extends Controller
      */
     public function index()
     {
-        $categories = New Category();
-        return view('admin.Categories.index',['categories' => $categories->getCategory()]);
+        $categories = Category::all();
+        return view('admin.Categories.index',['categories' => $categories]);
     }
 
     /**
@@ -26,7 +26,8 @@ class categoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('admin.Categories.create',['categories' => $categories]);
     }
 
     /**
@@ -37,7 +38,51 @@ class categoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Category::create($request->only(['title', 'description']));
+
+        if($category) {
+            return redirect()->route('admin.category.index')
+                ->with('success', 'Категория успешно добавлена');
+        }
+
+        return back()->with('error', 'Категория не добавлена');
+
+    }
+
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Category $category)
+    {
+
+        return view('admin.Categories.edit',['category' => $category]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Category $category)
+    {
+
+        $category->title = $request->input('title');
+        $category->description = $request->input('description');
+    //    $category = $category->fill($request->only(['title', 'description']))->save();
+
+        if($category->save()) {
+            return redirect()->route('admin.category.index')
+                ->with('success', 'Категория успешно обновлена');
+        }
+
+        return back()->with('error', 'Категория не обновлена');
     }
 
     /**
@@ -55,35 +100,12 @@ class categoryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
         //
     }

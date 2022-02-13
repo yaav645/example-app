@@ -11,7 +11,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
 
-                        <a href="{{ route('news.show', ['id' => $news->id]) }}" class="btn btn-sm btn-outline-secondary">Смотреть подробней</a>
+                        <a href="{{ route('news.show', [$news->id]) }}" class="btn btn-sm btn-outline-secondary">Смотреть подробней</a>
 
                     </div>
                     <small class="text-muted">Автор:{{ $news->author }} <br> {{ now()->format('d-m-Y H:i') }}</small>
