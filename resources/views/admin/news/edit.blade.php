@@ -12,7 +12,9 @@
         <div class="for-group">
             <label for="title">Наименование</label>
             <input type="text" name="title" id="title" class="form-control" value="{{ $news->title }}">
+            @error('title') <div> <strong style="color:red;">{{ $message }}</strong></div> @enderror
         </div>
+
         <div class="for-group">
             <label for="category_id">Категория</label>
             <select class="form-control" id="category_id" name="category_id">
@@ -20,11 +22,14 @@
                 @foreach($categories as $category)
                      <option @if($news->category_id === $category->id) selected @endif value="{{ $category->id }}">{{ $category->title }}</option>
                 @endforeach
+                @error('category_id') <div> <strong style="color:red;">{{ $message }}</strong></div> @enderror
             </select>
         </div>
         <div class="for-group">
             <label for="author">Автор</label>
             <input type="text" name="author" id="author" class="form-control" value="{{ $news->author }}">
+            @error('author') <div> <strong style="color:red;">{{ $message }}</strong></div> @enderror
+
         </div>
         <div class="for-group">
             <label for="status">Статус</label>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateNewsRequest;
+use App\Http\Requests\EditNewsRequest;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -16,9 +18,13 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::paginate(10);
-        $categories = Category::all();
-        return view('admin.news.index',['newslist' => $news, 'categories' => $categories]);
+        $news = News::with('category')->paginate(10);
+
+       /* $news = News::join('categories', 'news.category_id', "=", 'categories.id')
+                ->select('news.*', 'categories.title as categoryTitle')
+                ->paginate(10);*/
+
+        return view('admin.news.index',['newslist' => $news]);
     }
 
     /**
@@ -42,19 +48,18 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateNewsRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-            'author' => ['required', 'string']
-        ]);
-        $news = News::create($request->only(['title', 'category_id', 'author', 'status', 'description']));
+
+        //$news = News::create($request->only(['title', 'category_id', 'author', 'status', 'description']));
+        $news = News::create($request->validated());
+
         if($news) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость успешно добавлена');
+                ->with('success', trans('messages.admin.news.store.success'));
         }
 
-        return back()->with('error', 'Новость не добавлена');
+        return back()->with('error', trans('messages.admin.news.store.fail'));
     }
 
     /**
@@ -87,7 +92,7 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(EditNewsRequest $request, News $news)
     {
     /*    $news->title = $request->input('title');
         $news->category_id = $request->input('category_id');
@@ -96,13 +101,14 @@ class NewsController extends Controller
         $news->description = $request->input('description');*/
 
         $news = $news->fill($request->only(['title', 'category_id', 'author', 'status', 'description']))->save();
+        //$news = $news->fill($request->validated())->save();
 
         if($news) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость успешно обновлена');
+                ->with('success', trans('messages.admin.news.update.success'));
         }
 
-        return back()->with('error', 'Новость не обновлена');
+        return back()->with('error', trans('messages.admin.news.update.fail'));
     }
 
     /**

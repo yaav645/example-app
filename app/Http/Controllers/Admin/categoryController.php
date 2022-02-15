@@ -15,7 +15,7 @@ class categoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::with('news')->paginate(10);
         return view('admin.Categories.index',['categories' => $categories]);
     }
 
@@ -42,10 +42,10 @@ class categoryController extends Controller
 
         if($category) {
             return redirect()->route('admin.category.index')
-                ->with('success', 'Категория успешно добавлена');
+                ->with('success', trans('messages.admin.category.store.success'));
         }
 
-        return back()->with('error', 'Категория не добавлена');
+        return back()->with('error', trans('messages.admin.category.store.fail'));
 
     }
 
@@ -79,10 +79,10 @@ class categoryController extends Controller
 
         if($category->save()) {
             return redirect()->route('admin.category.index')
-                ->with('success', 'Категория успешно обновлена');
+                ->with('success', trans('messages.admin.category.update.success'));
         }
 
-        return back()->with('error', 'Категория не обновлена');
+        return back()->with('error', trans('messages.admin.category.update.fail'));
     }
 
     /**
@@ -91,10 +91,9 @@ class categoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        $category = New Category();
-        $category = $category->getCategoryByID($id);
+
         return view('categories.show', ['category' => $category]);
 
     }

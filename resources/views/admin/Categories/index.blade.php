@@ -26,6 +26,7 @@
                     <td>{{ $category->id }}</td>
                     <td>
                         <a href="{{ route('category.show', [$category->id]) }}" style="text-decoration: none;">{{ $category->title }}</a>
+                        ({{ $category->news->count() }})
                     </td>
                     <td>
                         @if($category->updated_at)
@@ -44,5 +45,7 @@
         </table>
     </div>
 
-
+    <div>
+        {{ $categories->links() }}
+    </div>
 @endsection

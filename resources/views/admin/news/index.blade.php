@@ -32,7 +32,7 @@
                     <td>
                         <a href="{{ route('news.show', [$news->id]) }}" style="text-decoration: none;">{{ $news->title }}</a>
                     </td>
-                    <td>{{ $news->category_id }}</td>
+                    <td>{{ $news->category->title }}</td>
                     <td>{{ $news->author }}</td>
                     <td>{{ $news->status }}</td>
                     <td>

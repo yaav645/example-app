@@ -11,6 +11,7 @@
         <div class="for-group">
             <label for="title">Наименование</label>
             <input type="text" name="title" id="title" class="form-control" placeholder="Введите заголовок" value="{{ old('title') }}">
+            @error('title') <div> <strong style="color:red;">{{ $message }}</strong></div> @enderror
         </div>
         <div class="for-group">
             <label for="category_id">Категория</label>
@@ -20,10 +21,12 @@
                     <option @if(old('category_id') === $category->id) selected @endif value="{{ $category->id }}">{{ $category->title }}</option>
                 @endforeach
             </select>
+            @error('category_id') <div> <strong style="color:red;">{{ $message }}</strong></div> @enderror
         </div>
         <div class="for-group">
             <label for="author">Автор</label>
             <input type="text" name="author" id="author" class="form-control" placeholder="Введите имя" value="{{ old('author') }}">
+            @error('author') <div> <strong style="color:red;">{{ $message }}</strong></div> @enderror
         </div>
         <div class="for-group">
             <label for="status">Статус</label>
