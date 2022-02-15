@@ -33,7 +33,8 @@
                             {{ $category->updated_at->format('d-m-Y H:i') }}
                         @else - @endif
                     <td>
-                        <a href="{{ route('admin.category.edit', [$category->id]) }}">Ред.</a>&nbsp;|&nbsp; <a href="javascript" style="color: red">Уд.</a>
+                        <a href="{{ route('admin.category.edit', [$category->id]) }}">Ред.</a>&nbsp;|&nbsp;
+                        <a href="javascript:;" class="delete" rel="{{ $category->id }}" style="color: red">Уд.</a>
                     </td>
                 </tr>
             @empty
@@ -49,3 +50,30 @@
         {{ $categories->links() }}
     </div>
 @endsection
+@push('js')
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const fetchData = async (url, options) => {
+                const response = await fetch(`${url}`, options);
+                const body = await response.json();
+                return body;
+            }
+            const links = document.querySelectorAll(".delete");
+            links.forEach(function (index) {
+                index.addEventListener("click", function () {
+                    if(confirm("Вы подтверждаете удаление ?")) {
+                        fetchData("{{ url('/admin/category') }}/" + this.getAttribute('rel'), {
+                            method: "DELETE",
+                            headers: {
+                                'Content-Type': 'application/json; charset=utf-8',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        }).then((data) => {
+                            alert('Deleted');
+                            location.reload()
+                        })
+                    }
+                });
+            });
+        });
+    </script>

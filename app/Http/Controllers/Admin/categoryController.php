@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\EditCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -36,9 +38,9 @@ class categoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request)
     {
-        $category = Category::create($request->only(['title', 'description']));
+        $category = Category::create($request->validated());
 
         if($category) {
             return redirect()->route('admin.category.index')
@@ -70,12 +72,13 @@ class categoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(EditCategoryRequest $request, Category $category)
     {
 
-        $category->title = $request->input('title');
-        $category->description = $request->input('description');
+    //    $category->title = $request->input('title');
+    //   $category->description = $request->input('description');
     //    $category = $category->fill($request->only(['title', 'description']))->save();
+        $category = $category->fill($request->validated());
 
         if($category->save()) {
             return redirect()->route('admin.category.index')
@@ -106,6 +109,12 @@ class categoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+            return response()->json(['success' => true]);
+        }catch (\Exception $e) {
+            \Log::error($e->getMessage() . PHP_EOL, $e->getTrace());
+            return response()->json(['success' => false]);
+        }
     }
 }

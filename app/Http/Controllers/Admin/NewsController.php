@@ -100,7 +100,7 @@ class NewsController extends Controller
         $news->status = $request->input('status');
         $news->description = $request->input('description');*/
 
-        $news = $news->fill($request->only(['title', 'category_id', 'author', 'status', 'description']))->save();
+        $news = $news->fill($request->validated())->save();
         //$news = $news->fill($request->validated())->save();
 
         if($news) {
@@ -119,6 +119,13 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+
+        try {
+            $news->delete();
+            return response()->json(['success' => true]);
+        }catch (\Exception $e) {
+            \Log::error($e->getMessage() . PHP_EOL, $e->getTrace());
+            return response()->json(['success' => false]);
+        }
     }
 }
